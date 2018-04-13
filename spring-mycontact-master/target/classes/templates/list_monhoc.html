@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+<body>
+    <nav th:replace="layout :: header"></nav>
+
+    <div class="container main-content list">
+    	<div th:if="${success}" class="row alert alert-success alert-dismissible">
+	        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <span th:text="${success}"></span>
+	    </div>
+    	
+    	<th:block th:if="${#lists.isEmpty(subs)}">
+		    <h3>No contacts</h3>
+		</th:block>
+		
+        <th:block th:unless="${#lists.isEmpty(subs)}">
+            <div class="row">
+                <a th:href="@{/sub/create}" class="btn btn-success pull-left">
+                	<span class="glyphicon glyphicon-plus"></span> Add new sub
+               	</a>
+                <form class="form-inline pull-right" action="#" th:action="@{/sub/search}" method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" 
+                            placeholder="Type contact name..." />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+            </div>
+            <div class="row">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Ten mon</th>
+                            <th>giao vien</th>
+                            
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="sub,iterStat : ${subs}">
+                            <td th:text="${iterStat.count}"></td>
+                            <td th:text="${sub.tenmon}"></td>
+                            <td th:text="${sub.giaovien}"></td>
+             
+                            <td><a th:href="@{/sub/{idsub}/edit(idsub=${sub.idsub})}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td><a th:href="@{/sub/{idsub}/delete(idsub=${sub.idsub})}"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </th:block>
+    </div>
+    <!-- /.container -->
+
+    <footer th:replace="layout :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+<body>
+    <nav th:replace="layout :: header"></nav>
+
+    <div class="container main-content list">
+    	<div th:if="${success}" class="row alert alert-success alert-dismissible">
+	        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <span th:text="${success}"></span>
+	    </div>
+    	
+    	<th:block th:if="${#lists.isEmpty(students)}">
+		    <h3>No contacts</h3>
+		</th:block>
+		
+        <th:block th:unless="${#lists.isEmpty(students)}">
+            <div class="row">
+                <a th:href="@{/student/create}" class="btn btn-success pull-left">
+                	<span class="glyphicon glyphicon-plus"></span> Them moi sinh vien
+               	</a>
+                <form class="form-inline pull-right" action="#" th:action="@{/student/search}" method="GET">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q" 
+                            placeholder="Type contact name..." />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+               
+            </div>
+            <div class="row">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Mon hoc</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="student,iterStat : ${students}">
+                            <td th:text="${iterStat.count}"></td>
+                            <td th:text="${student.name}"></td>
+                            <td th:text="${student.email}"></td>
+                            <td th:text="${student.phone}"></td>
+                             <td th:text="${student.monhoc}"></td>
+                            <td><a th:href="@{/student/{id}/edit(id=${student.id})}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td><a th:href="@{/student/{id}/delete(id=${student.id})}"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </th:block>
+    </div>
+    <!-- /.container -->
+
+    <footer th:replace="layout :: footer"></footer>
+</body>
+</html>
